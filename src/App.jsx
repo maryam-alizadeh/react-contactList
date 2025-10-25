@@ -1,13 +1,25 @@
+import { useState } from "react";
 import Header from "./Components/Header/Header";
 import Search from "./Components/SearchBox/Search";
+import AddContactModal from "./Components/AddContactModal/AddContactModal";
+import ContactList from "./Components/ContactList/ContactList";
 
 function App() {
-  return(
+  const [showModal, setShowModal] = useState(false);
+  const [contactList, setContactList] = useState([]);
+  const openModal = () => setShowModal(true);
+  const closeModal = () => setShowModal(false);
+  const addContact = (newContact) => {
+    setContactList([...contactList, newContact]);
+  };
+  return (
     <>
-   <Header />
-   <Search/>
+      <Header onAdd={openModal} />
+      <Search />
+      <ContactList contactList={contactList} />
+      {showModal && <AddContactModal onClose={closeModal} onAdd={addContact} />}
     </>
-  )
+  );
 }
 
 export default App;
