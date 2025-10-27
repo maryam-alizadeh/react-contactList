@@ -12,11 +12,16 @@ function App() {
   const addContact = (newContact) => {
     setContactList([...contactList, newContact]);
   };
+
+    const deleteContact = (id) => {
+    const updatedList = contactList.filter((contact) => contact.id !== id);
+    setContactList(updatedList);
+  };
   return (
     <>
       <Header onAdd={openModal} />
       <Search />
-      <ContactList contactList={contactList} />
+      <ContactList contactList={contactList} onDelete={deleteContact}/>
       {showModal && <AddContactModal onClose={closeModal} onAdd={addContact} />}
     </>
   );

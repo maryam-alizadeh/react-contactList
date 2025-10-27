@@ -1,8 +1,10 @@
 import { useState } from "react";
 import styles from "./AddContact.module.css";
+import { v4 } from "uuid";
 
 function AddContactModal({ onClose, onAdd }) {
   const [contact, setContact] = useState({
+    id:"",
     name: "",
     lastName: "",
     phone: "",
@@ -17,7 +19,8 @@ function AddContactModal({ onClose, onAdd }) {
 
   const addHandler = () => {
     if (!contact.name || !contact.phone) return;
-    onAdd(contact);
+    const newContact={...contact,id:v4()}
+    onAdd(newContact);
     setContact({ name: "", lastName: "", phone: "" });
     onClose();
   };
