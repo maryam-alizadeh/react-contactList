@@ -1,10 +1,15 @@
 import styles from "../ContactList/ContactList.module.css";
-function ContactItem({ data: { id, name, lastName, phone }, onDelete, onSelect, isSelected }) {
+function ContactItem({ data, onDelete, onSelect, isSelected, onEdit }) {
+    const { id, name, lastName, phone } = data;
   const handleDeleteContact = () => {
     onDelete(id);
   };
   const selectHandler = () => {
     onSelect(id);
+  };
+
+  const editHandler = () => {
+    onEdit(data);
   };
   return (
     <div className={styles.item}>
@@ -18,7 +23,7 @@ function ContactItem({ data: { id, name, lastName, phone }, onDelete, onSelect, 
           <span>🗑️</span>
         </button>
         <button>
-          <span>🖋️</span>
+          <span onClick={editHandler}>🖋️</span>
         </button>
       </div>
     </div>

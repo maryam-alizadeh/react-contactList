@@ -8,21 +8,40 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [contactList, setContactList] = useState([]);
   const openModal = () => setShowModal(true);
-  const closeModal = () => setShowModal(false);
+  const closeModal = () => {
+    setShowModal(false);
+    setEditContact(null);
+  };
+  const [editContact, setEditContact] = useState(null);
   const addContact = (newContact) => {
     setContactList([...contactList, newContact]);
   };
 
-    const deleteContact = (id) => {
+  const deleteContact = (id) => {
     const updatedList = contactList.filter((contact) => contact.id !== id);
     setContactList(updatedList);
+  };
+
+
+    const editHandler = (contact) => {
+    setEditContact(contact);
+    openModal();
+  };
+
+
+    const updateContact = (updatedContact) => {
+    const updatedList = contactList.map((item) =>
+      item.id === updatedContact.id ? updatedContact : item
+    );
+    setContactList(updatedList);
+    closeModal();
   };
   return (
     <>
       <Header onAdd={openModal} />
       <Search />
-      <ContactList contactList={contactList} onDelete={deleteContact}/>
-      {showModal && <AddContactModal onClose={closeModal} onAdd={addContact} />}
+      <ContactList contactList={contactList} onDelete={deleteContact} onEdit={editHandler} />
+      {showModal && <AddContactModal onClose={closeModal} onAdd={addContact} onEdit={updateContact} editContact={editContact} />}
     </>
   );
 }

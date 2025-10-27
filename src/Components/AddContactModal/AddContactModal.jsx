@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./AddContact.module.css";
 import { v4 } from "uuid";
 
-function AddContactModal({ onClose, onAdd }) {
+function AddContactModal({ onClose, onAdd, onEdit, editContact }) {
   const [contact, setContact] = useState({
-    id:"",
+    id: "",
     name: "",
     lastName: "",
     phone: "",
   });
 
+  useEffect(() => {
+    if (editContact) {
+      setContact(editContact);
+    }
+  }, [editContact]);
   const changeHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -19,11 +24,18 @@ function AddContactModal({ onClose, onAdd }) {
 
   const addHandler = () => {
     if (!contact.name || !contact.phone) return;
-    const newContact={...contact,id:v4()}
-    onAdd(newContact);
+
+    if (editContact) {
+      onEdit(contact);
+    } else {
+      const newContact = { ...contact, id: v4() };
+      onAdd(newContact);
+    }
+
     setContact({ name: "", lastName: "", phone: "" });
     onClose();
   };
+
   return (
     <>
       <div className={styles.overlay}>
@@ -33,7 +45,7 @@ function AddContactModal({ onClose, onAdd }) {
           <input type="text" name="name" placeholder="Name" value={contact.name} onChange={changeHandler} />
           <input type="text" name="lastName" placeholder="LastName" value={contact.lastName} onChange={changeHandler} />
           <input type="number" name="phone" placeholder="Phone" value={contact.phone} onChange={changeHandler} />
-          <button onClick={addHandler}>Add</button>
+          <button onClick={addHandler}>{editContact ? "Save Changes" : "Add"}</button>
           <button onClick={onClose}>Close</button>
         </div>
       </div>
