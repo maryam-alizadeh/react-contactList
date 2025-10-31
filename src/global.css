@@ -1,9 +1,35 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  }
+}
 body {
- margin: 0 auto;
-  max-width: 1200px;
+  margin: 0;
+  background-color: #f2f2f7;
+  font-family: system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
+  overflow: hidden;
+}
+.appContainer {
+  width: 500px;
+  height: 90vh;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
+.contactArea {
+  flex: 1;
+  position: relative;
+  width: 500px;
+  height: 80vh;
+  background-color: #fff;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+  margin-top: 10px;
+  padding-bottom: 60px;
+}

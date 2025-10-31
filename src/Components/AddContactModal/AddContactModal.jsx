@@ -10,6 +10,12 @@ function AddContactModal({ onClose, onAdd, onEdit, editContact }) {
     phone: "",
   });
 
+  const [errors, setErrors] = useState({
+    name: "",
+    lastName: "",
+    phone: "",
+  });
+
   useEffect(() => {
     if (editContact) {
       setContact(editContact);
@@ -20,19 +26,29 @@ function AddContactModal({ onClose, onAdd, onEdit, editContact }) {
     const value = e.target.value;
 
     setContact((contact) => ({ ...contact, [name]: value }));
+     setErrors({ name: "", lastName: "", phone: "" });
   };
 
   const addHandler = () => {
-    if (!contact.name || !contact.phone) return;
-
+    let newErrors = { name: "", lastName: "", phone: "" };
+    if (!contact.name.trim()) newErrors.name = "Name is required.";
+    if (!contact.lastName.trim()) newErrors.lastName = "Last name is required.";
+    if (!contact.phone.trim() || contact.phone.length < 5) newErrors.phone = "Enter a valid phone number.";
+    if (newErrors.name || newErrors.lastName || newErrors.phone) {
+      setErrors(newErrors);
+      return;
+    }
     if (editContact) {
+      const confirmEdit = window.confirm("Are you sure you want to save changes?");
+      if (!confirmEdit) return;
       onEdit(contact);
     } else {
       const newContact = { ...contact, id: v4() };
       onAdd(newContact);
     }
 
-    setContact({ name: "", lastName: "", phone: "" });
+    setContact({ id: "", name: "", lastName: "", phone: "" });
+    setErrors({ name: "", lastName: "", phone: "" });
     onClose();
   };
 
@@ -43,8 +59,11 @@ function AddContactModal({ onClose, onAdd, onEdit, editContact }) {
           <h1>Add Contact</h1>
 
           <input type="text" name="name" placeholder="Name" value={contact.name} onChange={changeHandler} />
+          {errors.name && <p className={styles.error}>{errors.name}</p>}
           <input type="text" name="lastName" placeholder="LastName" value={contact.lastName} onChange={changeHandler} />
+          {errors.lastName && <p className={styles.error}>{errors.lastName}</p>}
           <input type="number" name="phone" placeholder="Phone" value={contact.phone} onChange={changeHandler} />
+          {errors.phone && <p className={styles.error}>{errors.phone}</p>}
           <button onClick={addHandler}>{editContact ? "Save Changes" : "Add"}</button>
           <button onClick={onClose}>Close</button>
         </div>
