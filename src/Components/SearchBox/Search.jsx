@@ -1,8 +1,10 @@
 import styles from "./Search.module.css"
-function Search({onSearch}) {
-  
+import { useContacts } from "../../context/ContactsContext";
+
+function Search() {
+  const { setSearchTerm } = useContacts();
   const changeHandler = (e) => {
-    onSearch(e.target.value);
+    setSearchTerm(e.target.value);
   };
 
   return (
